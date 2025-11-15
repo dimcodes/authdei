@@ -1,0 +1,104 @@
+* {
+   box-sizing: border-box;
+   margin: 0;
+      padding: 0;
+}
+body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #2a2a2a;
+      font-family: sans-serif;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--p10);
+      background: rgba(255,255,255,0.05);
+      border-radius: var(--p20) var(--p10);
+      border: 1.5px solid rgba(255,255,255,0.1);
+      width: 90%;
+      max-width: 400px;
+      padding: var(--p30) var(--p20);
+    }
+    
+    h2 {
+      color: #F5F5F5;
+      text-align: center;
+      font-weight: 600;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--p20);
+      width: var(--p100p);
+    }
+    input {
+      width: var(--p100p);
+      padding: 18px;
+      border: 1.5px solid var(--c5);
+      border-radius: var(--p10);
+      font-size: var(--p15);
+      outline: none;
+      background-color: transparent;
+      color: rgba(255,255,255, .8);
+      transition: border 0.2s;
+    }
+    .container-pw {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.container-pw .bx {
+  position: absolute;
+  right: 12px;
+  color: var(--c6);
+  font-size: var(--p22);
+}
+.bx-eye,
+.bx-eye-slash {
+  color: var(--c6);
+  font-size: var(--p22);
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.bx-eye-slash {
+  color: var(--c8);
+  transform: scale(1.1);
+}
+input[type="password"],
+input[type="text"] {
+    font-size: var(--p16);
+}
+    ::placeholder {
+       color: rgba(255,255,255, .8);
+    }
+    input:focus {
+      border-color: var(--b-t);
+    }
+    p {
+       font-size: 0.95em;
+      color: #CFCFCF;
+    }
+    .header {
+      text-align: left;
+      margin-bottom: var(--p30);
+    }
+    .help {
+       font-weight: 300;
+    }
+    .help.l{
+       text-align: left;
+       margin-bottom: var(--p10);
+    }
+    .help.c {
+       text-align: center;
+    }
+    a {
+      color: var(--b-t);
+      text-decoration: none;
+      font-weight: 600;
+    }

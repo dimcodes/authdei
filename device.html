@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Perangkat yang Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@200..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" rel="stylesheet">
+  <script type="module">
+  import { cekauth, elastis_scrol, monitorThisDevice } from './ref.js';
+  cekauth();
+  monitorThisDevice();
+  elastis_scrol('.scroll-container');
+</script>
+<link rel="stylesheet" href="global.css">
+  <style>
+  body {
+    margin: 0;
+    background: #1b1b1b;
+    color: #fff;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #2e2e2e;
+    z-index: 10;
+    position: relative;
+    background: transparent;
+    backdrop-filter: blur(5px);
+  }
+
+  .back-icon {
+    font-family: 'Material Symbols Outlined';
+    font-size: 24px;
+    color: #bdbdbd;
+    cursor: pointer;
+  }
+
+  header h1 {
+    flex: 1;
+    margin-left: 24px;
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .device-card { background: rgba(255,255,255, .05);border-radius:20px 10px;border: 1.5px solid rgba(255,255,255, .1); padding:14px 16px; display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; transition:all .1s; }
+  .device-card:hover { transform: scale(1.005) translate(0,-3px); }
+  .device-info { display:flex; align-items:center; gap:12px; }
+  .device-icon { background:#383838; border-radius:8px; width:40px; height:52px; display:flex; align-items:center; justify-content:center; }
+  .device-icon span { font-family:'Material Symbols Outlined'; font-size:24px; color:#bdbdbd; }
+  .device-text h2 { font-size:16px; font-weight:600; margin:0; }
+  .device-text p { margin:3px 0 0; font-size:13px; color:#a9a9a9; max-width:280px; line-height:1.4; word-wrap:break-word; }
+  .delete-btn { font-family:'Material Symbols Outlined'; font-size:22px; color:#ff4c4c; cursor:pointer; transition:transform 0.2s ease; }
+  .delete-btn:hover { transform:scale(1.1); }    
+  a, button, span {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+
+</style>
+</head>
+<body>
+  <header>
+    <span class="back-icon" onclick="window.history.back()">arrow_back</span>
+    <h1>Perangkat yang Login</h1>
+  </header>
+    </div>
+  <div class="scroll-container" id="scrollContainer">
+    <div id="devicesList"><p>Sabar lagi muat...</p></div>
+  </div>
+  
+
+<script type="module">
+import { db } from './firebase.js';
+import { ref, onValue, set } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+import { getlocal, showAlert, isSessionValid } from './ref.js';
+
+async function loadDevices() {
+  const user = await getlocal("user");
+  if (!user) return window.location.replace("index.html");
+
+  const listContainer = document.getElementById("devicesList");
+  const currentUA = navigator.userAgent;
+  const userRef = ref(db, `user_detail/${user}/devices`);
+
+  // 🔒 Pindahkan ke luar, jadi global dalam fungsi ini
+  let hapus_kunci = false;
+  let stecu_kunci = false;
+
+  onValue(userRef, (snapshot) => {
+    const devices = snapshot.val() || {};
+    listContainer.innerHTML = "";
+
+    const deviceEntries = Object.entries(devices);
+    const [currentDevice, otherDevices] = deviceEntries.reduce(
+      ([cur, others], [id, d]) => {
+        if (currentUA === d.userAgent) cur.push([id, d]);
+        else others.push([id, d]);
+        return [cur, others];
+      },
+      [[], []]
+    );
+
+    const sortedDevices = [...currentDevice, ...otherDevices];
+
+    if (sortedDevices.length === 0) {
+      const p = document.createElement("p");
+      p.textContent = "Belum ada perangkat yang login.";
+      listContainer.appendChild(p);
+      return;
+    }
+
+    sortedDevices.forEach(([id, d]) => {
+      const isCurrent = currentUA === d.userAgent;
+
+      const card = document.createElement("div");
+      card.className = "device-card";
+      card.innerHTML = `
+        <div class="device-info">
+          <div class="device-icon"><span>mobile</span></div>
+          <div class="device-text">
+            <h2>${d.device}${isCurrent ? " (Perangkat ini)" : ""}</h2>
+            <p>Login pada ${d.login_at || "-"} • ${d.city || "-"} • ${d.province || "-"} • ${d.country || "-"} • ${d.browser || "-"}</p>
+          </div>
+        </div>
+        <span class="delete-btn" data-id="${id}">delete</span>
+      `;
+      listContainer.appendChild(card);
+
+      const deleteBtn = card.querySelector(".delete-btn");
+      deleteBtn.addEventListener("click", async () => {
+        if (hapus_kunci || stecu_kunci) return;
+        if (!isSessionValid()) return;
+
+        if (navigator.vibrate) navigator.vibrate([80]);
+
+        const confirmDelete = confirm("Yakin ingin menghapus perangkat ini?");
+        if (!confirmDelete) return;
+
+        hapus_kunci = true;
+        stecu_kunci = true;
+
+        const isCurrent = navigator.userAgent === d.userAgent;
+
+        try {
+          await set(ref(db, `user_detail/${user}/devices/${id}`), null);
+          if (!isCurrent) {
+            showAlert("success", "Perangkat berhasil dihapus!", 3000);
+          }
+          card.remove();
+        } catch (err) {
+          console.error(err);
+          showAlert("danger", "Gagal menghapus perangkat.", 3000);
+        }
+
+        setTimeout(() => {
+          hapus_kunci = false;
+          stecu_kunci = false;
+        }, 6000);
+      });
+    });
+  });
+}
+
+window.addEventListener("DOMContentLoaded", loadDevices);
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 Not Found</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1a1a1a;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    gap: 20px; /* jarak antara teks dan garis */
+  }
+
+  .line {
+    width: 2px;
+    height: 1.5rem;
+    background-color: #fff;
+  }
+</style>
+</head>
+<body>
+  <div class="container"><div id="lottie" style="width:300px; height:300px;"></div>
+<div class="hello">
+   <h1>Hello</h1>
+   <h2>hello</h2>
+   <h3>hello</h3>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.0/lottie.min.js"></script>
+<script>
+  // Load animasi
+  
+  const animation = lottie.loadAnimation({
+    container: document.getElementById('lottie'),
+    renderer: 'svg',   
+    loop: false,
+    autoplay: true, // jangan autoplay
+    path: 'https://lottie.host/e2af3480-f6b6-4e4e-97c8-6b4d45620ecc/8nbuUwq6HU.json'
+  });
+
+  // Tunggu halaman load
+  const text = document.querySelectorAll('.hello');
+window.onload = () => {
+  text.forEach(el => el.innerHTML = "");
+};
+</script>
+
+</body>
+</html>

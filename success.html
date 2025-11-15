@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Sign Up Success</title>
+<link rel="stylesheet" href="global.css">
+<link rel="stylesheet" href="s.css">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<script type="module">
+  import {elastis_scrol } from './ref.js';
+  elastis_scrol('.scroll-container');
+</script>
+<style> 
+.scroll-container {
+    height: 100vh;
+    width: 100%;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+</style>
+</head>
+<body>
+   <div class="scroll-container" id="scrollContainer">
+  <div class="success-s">
+    <div id="lottie"></div>
+    <h1>Successful!</h1>
+    <h2>Yey! Akunmu berhasil dibuat. Sekarang kamu bisa login nih</h2>
+    <button class="button-p" onclick="sessionStorage.clear(); window.open('/index.html', '_self')">One Tap Login!</button>
+  </div>
+  </div>
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.0/lottie.min.js"></script>
+
+<script>
+function validasic() {  
+  const token = sessionStorage.getItem('c-t');  
+
+  // Token tidak ada → invalid  
+  if (!token) return false;  
+  return true;  
+}  
+
+// Cegah browser cache halaman ini  
+window.addEventListener('pageshow', function(event) {  
+  if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {  
+    window.location.reload();  
+  }  
+});  
+
+// Langsung diakses
+window.onload = () => {  
+  if (!validasic()) {  
+    document.querySelector('.success-s').innerHTML = "";  
+    window.open('./index.html', '_self');  
+    return;  
+  }  
+
+  // Token valid, hapus supaya sekali pakai  
+  sessionStorage.removeItem('c-t');  
+
+  // Fade-in + bounce teks setelah 1 detik  
+  const el = document.querySelector('.success-s');  
+  setTimeout(() => {  
+    el.classList.add('s');  
+  }, 1000);  
+
+  // Lottie animasi  
+  const animation = lottie.loadAnimation({  
+    container: document.getElementById('lottie'),  
+    renderer: 'svg',  
+    loop: false,  
+    autoplay: false,  
+    path: 'https://lottie.host/1d9b4854-e32f-44b0-ae24-385162ccdf66/nijto7UVo6.json'  
+  });  
+
+  setTimeout(() => {  
+    animation.goToAndPlay(0, true);  
+  }, 1000);  
+};
+</script>
+</body>
+</html>

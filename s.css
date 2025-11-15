@@ -1,0 +1,50 @@
+@import url("root.css");
+
+body {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  background-color: var(--default-b);
+  font-family: sans-serif;
+}
+
+.success-s {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--p5);
+  background: rgba(255,255,255, 0.05);
+  border-radius: var(--p20) var(--p10);
+  border: 1.var(--p5) solid rgba(255,255,255, 0.1);
+  width: 90%;
+  max-width: 400px;
+  padding: var(--p20);
+  box-sizing: border-box;
+  transition: opacity 0.6s ease, transform 0.8s cubic-bezier(0.68, -0.6, 0.32, 1.5);
+  opacity: 0;
+  transform: scale(.9);
+}
+
+.success-s h1 {
+  color: #F5F5F5;
+  margin: 0;
+  font-size: 2.3rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.success-s h2 {
+  color: #CFCFCF;
+  margin-bottom: var(--p20);
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 300;
+  max-width: 90%;
+  line-height: 1.5; 
+}
+.success-s.s{
+   opacity: 1;
+   transform: scale(1);
+}
