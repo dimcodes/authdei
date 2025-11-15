@@ -97,3 +97,15 @@ input:-webkit-autofill:focus {
     align-items: center;
     box-sizing: border-box;
 }
+.cf-turnstile {
+  border-radius: 10px!important;
+}
+/*
+Source - https://stackoverflow.com/a
+Posted by Lochyj, modified by community. See post 'Timeline' for change history
+Retrieved 2025-11-15, License - CC BY-SA 4.0
+*/
+
+.captcha {
+border: none !important;
+}
