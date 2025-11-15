@@ -31,8 +31,14 @@ title="Min 7, Max 14 Karakter huruf angka, Tidak boleh ada spasi" required>
 <i class="bx bx-eye" id="btsw_p"></i>
        </div>
       <p class="help l">Lupa sandi? <a href="signup">Klik di sini</a></p>
-      <div class="cf-turnstile" data-sitekey="0x4AAAAAACBE0RskKrgTCtLP"></div>
-      <button class="button-p" type="submit">Login</button>
+        <input type="hidden" id="turnstile-token">
+  <div class="cf-turnstile"
+       data-sitekey="0x4AAAAAACBEd8nziwVm2h6b"
+       data-callback="tsSuccess"
+       data-expired-callback="tsExpired"
+       data-error-callback="tsError">
+  </div>
+      <button class="button-p" type="submit" disabled>Login</button>
       <button type="button" class="button-p" id="b_g"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/250px-Google_Favicon_2025.svg.png" alt="">Sign in with Google</button>
       <p class="help c">Tidak punya akun? <a href="signup.html">Daftar</a> | <a href="legal.html">Terms & Policy</a></p>
     </form>
