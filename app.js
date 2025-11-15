@@ -1,7 +1,7 @@
 import { db } from './firebase.js';
 import { ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 import { getDateTime, setlocal, getlocal, removelocal, removelocalm, showAlert } from './ref.js';
-import { verifyTurnstile } from "./turnstile.js";
+import { checkTurnstileBeforeSubmit } from "./ts.js";
 
 let hentikan_listener = null;
 let user_sekarang = null;
@@ -554,17 +554,16 @@ function getServerTimeMs() {
   });
 }
 
+
 // ============================================
 // LOGIN FUNCTION
 // ============================================
 
 window.login = async function login(event) {
   if (event) event.preventDefault();
-  
-  if (!verifyTurnstile()) {
-  showAlert("warning", "Verifikasi keamanan belum selesai / expired!", 2500);
-  return;
-}
+  if (!checkTurnstileBeforeSubmit()) {
+        return; // hentikan proses login
+    }
   const usernamei = document.getElementById("username");
   const passwordi = document.getElementById("password");
   const username = usernamei.value.trim();
@@ -673,11 +672,9 @@ function bikintoken() {
 
 window.signup = async function signup(event) {
   if (event) event.preventDefault();
-  
-  if (!verifyTurnstile()) {
-  showAlert("warning", "Verifikasi keamanan belum selesai / expired!", 2500);
-  return;
-}
+  if (!checkTurnstileBeforeSubmit()) {
+        return;
+    }
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value.trim();
   const confirm = document.getElementById("confirm-password").value.trim();
